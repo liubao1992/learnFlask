@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" id="input">
+        <button id="add">添加</button>
+        <ul class="ulList">
+            
+        </ul>
+        <input type="file" id="file">
+        <button id="upload">上传</button>
+    </div>
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+    <script>
+        
+        let API = "http://192.168.1.75:5000/"
+        function loadFun() {
+            $.ajax({
+                type: "post",
+                url: API+'login/login',
+                data:JSON.stringify({
+                    "name":'lb',
+                    "age":'28'
+                }),
+                success: function (data) {
+                    console.log(data)
+                    console.log(data.msg)
+                    //$('#app').text(JSON.stringify(data))
+                },
+                error: function (jqXHR) {
+                    console.log("Error: " + jqXHR.status);
+                }
+            });
+        }
+        loadFun()
+        $('#add').click(function(){
+            let value = $('#input').val()
+            console.log(value)
+            $.ajax({
+                type: "post",
+                url: API+'user/addUser',
+                dataType:'json',
+                data:{
+                    "username":value,
+                },
+                success: function (res) {
+                    console.log(res)
+                    //getList()
+                }
+            });
+        })
+        //获取用户列表
+        function getList(){
+            $.ajax({
+                type: "get",
+                url: API+'user/getUserList',
+                success: function (res) {
+                    let data = res.data;
+                    let txt = "";
+                    data.forEach(element => {
+                        txt+="<li>"+element+"<i data-feather='x-circle'></i></li>"
+                    });
+                    $('.ulList').html(txt)
+                    feather.replace()
+                }
+            });
+        }
+        getList()
+        $('#upload').click(function(){
+            console.log('xfdfsdf')
+            let file = document.getElementById('file').files[0];
+            var formData = new FormData();
+            formData.append('file',file)
+            uploadFile(formData)
+        })
+        function uploadFile(formData){
+            $.ajax({
+                type: "post",
+                url: API+'upload/uploadFile',
+                data:formData,
+                contentType:false,
+                processData:false,
+                success: function (res) {
+                    console.log(res)
+                }
+            });
+        } 
+    </script>
+</body>
+
+</html>

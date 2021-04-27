@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p id="psign"></p>
+  <button onclick="stopFun()">停止</button>
+  <script>
+     let dom = document.getElementById('psign');
+     let timer = null;
+     let index = 0
+     timer = setInterval(()=>{
+       index++
+       //console.log(index)
+       dom.innerText = index
+     },1000)
+     function stopFun(){
+       clearInterval(timer)
+       index = null
+     }
+  </script>
+</body>
+</html>
